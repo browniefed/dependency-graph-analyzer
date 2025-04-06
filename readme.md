@@ -41,3 +41,4 @@ usedInExportingFile: true|false
 
 // can we run `knip` on a file to check if it's not being used in that file.
 // if not recommend exports, just push to an export array
+// if only importing a single dep and it's a type, then push to recommended remediation
