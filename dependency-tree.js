@@ -3,8 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { debuglog } from "node:util";
-import cabinet from "./filing-cabinet";
-import precinct from "./precinct";
+import cabinet from "./filing-cabinet.js";
+import precinct from "./precinct.js";
 import Config from "./config.js";
 
 const debug = debuglog("tree");

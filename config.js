@@ -3,7 +3,7 @@
 import path from "node:path";
 import process from "node:process";
 import { debuglog } from "node:util";
-
+import ts from "typescript";
 const debug = debuglog("tree");
 
 export default class Config {
@@ -29,7 +29,6 @@ export default class Config {
 
     if (typeof this.tsConfig === "string") {
       debug("preparsing the ts config into an object for performance");
-      const ts = require("typescript");
       const tsParsedConfig = ts.readJsonConfigFile(
         this.tsConfig,
         ts.sys.readFile

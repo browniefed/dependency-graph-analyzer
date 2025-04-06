@@ -1,4 +1,4 @@
-import dependencyTree from "dependency-tree";
+import dependencyTree from "./dependency-tree.js";
 import fs from "fs";
 
 const tree = dependencyTree({

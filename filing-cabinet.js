@@ -5,8 +5,10 @@ import path from "node:path";
 import { debuglog } from "node:util";
 import appModulePath from "app-module-path";
 import { createMatchPath } from "tsconfig-paths";
-
+import ts from "typescript";
+import resovlve from "resolve-dependency-path";
 const debug = debuglog("cabinet");
+import getModuleType from "module-definition";
 
 /*
  * Most JS resolvers are lazy-loaded (only required when needed)
@@ -14,10 +16,7 @@ const debug = debuglog("cabinet");
  * this makes testing your code using this lib much easier
  */
 
-let getModuleType;
 let resolve;
-let amdLookup;
-let ts;
 let resolveDependencyPath;
 let webpackResolve;
 
@@ -53,7 +52,7 @@ export default function filingCabinet(options = {}) {
 
   if (!resolver) {
     debug("using generic resolver");
-    resolveDependencyPath ||= require("resolve-dependency-path");
+    resolveDependencyPath ||= resovlve;
 
     resolver = resolveDependencyPath;
   }
@@ -104,12 +103,6 @@ export function unregister(extension) {
  * @return {String}
  */
 export function _getJSType(options = {}) {
-  getModuleType ||= require("module-definition");
-
-  if (options.config) {
-    return "amd";
-  }
-
   if (options.webpackConfig) {
     return "webpack";
   }
@@ -124,8 +117,6 @@ export function _getJSType(options = {}) {
 }
 
 function getCompilerOptionsFromTsConfig(tsConfig) {
-  ts ||= require("typescript");
-
   debug(`given typescript config: ${tsConfig}`);
   let compilerOptions = {};
 
