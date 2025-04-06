@@ -23,3 +23,21 @@ https://github.com/dependents/node-dependency-tree
 https://github.com/dependents/node-filing-cabinet
 https://github.com/webpro-nl/knip
 https://github.com/pahen/madge
+
+// map import into one file to export from that file.
+// figure out if the file exported is exporting as a type but importing as value
+{
+path: '',
+imports: [
+{
+path: '',
+name: '',
+importedAs: 'value' | 'type',
+exportedAs: 'value' | 'type',
+usedInExportingFile: true|false
+}
+],
+}
+
+// can we run `knip` on a file to check if it's not being used in that file.
+// if not recommend exports, just push to an export array
