@@ -66,11 +66,6 @@ function detectiveTypeScript(src, options = {}) {
       case "ExportDefaultDeclaration":
       case "ExportNamedDeclaration":
       case "ExportAllDeclaration": {
-        console.log({
-          node,
-
-          exportKind: node.exportKind,
-        });
         if (skipTypeImports && isTypeExports(node)) {
           break;
         }
