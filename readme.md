@@ -1,5 +1,18 @@
 # Dep graph Analysis
 
+## Config file
+
+Create a `configuration.js`
+
+```
+export const config = {
+  filename: "", // entry point (specific route)
+  directory: "", // root directory
+  tsConfig: "", // tsconfig
+};
+
+```
+
 ## What
 
 - Given a file, a tsconfig, find all files in the graph
