@@ -32,10 +32,10 @@ export const config = {
 
 ## Resources
 
-https://github.com/dependents/node-dependency-tree
-https://github.com/dependents/node-filing-cabinet
-https://github.com/webpro-nl/knip
-https://github.com/pahen/madge
+- https://github.com/dependents/node-dependency-tree
+- https://github.com/dependents/node-filing-cabinet
+- https://github.com/webpro-nl/knip
+- https://github.com/pahen/madge
 
 // map import into one file to export from that file.
 // figure out if the file exported is exporting as a type but importing as value
