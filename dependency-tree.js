@@ -94,13 +94,12 @@ export const _getDependencies = function (config = {}) {
     debug(error.stack);
     return [];
   }
-  console.log(dependencies);
 
   const resolvedDependencies = [];
 
   for (const dependency of dependencies) {
     const result = cabinet({
-      partial: dependency,
+      partial: dependency.source,
       filename: config.filename,
       directory: config.directory,
       ast: precinct.ast,
@@ -113,22 +112,27 @@ export const _getDependencies = function (config = {}) {
     });
 
     if (!result) {
-      debug(`skipping an empty filepath resolution for partial: ${dependency}`);
-      config.nonExistent.push(dependency);
+      debug(
+        `skipping an empty filepath resolution for partial: ${dependency.source}`
+      );
+      config.nonExistent.push(dependency.source);
       continue;
     }
 
     const exists = fs.existsSync(result);
 
     if (!exists) {
-      config.nonExistent.push(dependency);
+      config.nonExistent.push(dependency.source);
       debug(
-        `skipping non-empty but non-existent resolution: ${result} for partial: ${dependency}`
+        `skipping non-empty but non-existent resolution: ${result} for partial: ${dependency.source}`
       );
       continue;
     }
 
-    resolvedDependencies.push(result);
+    resolvedDependencies.push({
+      ...dependency,
+      cabinetResult: result,
+    });
   }
 
   return resolvedDependencies;
@@ -159,15 +163,15 @@ function traverse(config = {}) {
     debug("using filter function to filter out dependencies");
     debug(`unfiltered number of dependencies: ${dependencies.length}`);
     // eslint-disable-next-line unicorn/no-array-method-this-argument, unicorn/no-array-callback-reference
-    dependencies = dependencies.filter((filePath) =>
-      config.filter(filePath, config.filename)
+    dependencies = dependencies.filter((dependency) =>
+      config.filter(dependency.cabinetResult, config.filename)
     );
     debug(`filtered number of dependencies: ${dependencies.length}`);
   }
 
   for (const dependency of dependencies) {
     const localConfig = config.clone();
-    localConfig.filename = dependency;
+    localConfig.filename = dependency.cabinetResult;
     localConfig.directory = getDirectory(localConfig);
 
     if (localConfig.isListForm) {
@@ -175,7 +179,12 @@ function traverse(config = {}) {
         subTree.add(item);
       }
     } else {
-      subTree[dependency] = traverse(localConfig);
+      subTree[dependency.cabinetResult] = {
+        ...dependency,
+        cabinetResult: undefined,
+        source: undefined,
+        children: traverse(localConfig),
+      };
     }
   }
 

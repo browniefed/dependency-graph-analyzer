@@ -12,3 +12,4 @@ async function read(filename) {
 }
 const fixture = await read("module.tsx");
 const result = precinct(fixture, { type: "tsx" });
+console.log(result);
