@@ -136,3 +136,4 @@ dist
 .pnp.*
 
 dependency-tree.json
+configuration.js
