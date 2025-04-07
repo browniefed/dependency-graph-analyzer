@@ -10,6 +10,8 @@ import Walker from "node-source-walk";
 export default function (content) {
   const walker = new Walker();
   const dependencies = [];
+  const importDeclarations = [];
+  const exportDeclarations = [];
 
   walker.walk(content, (node) => {
     if (
@@ -30,7 +32,7 @@ export default function (content) {
     }
   });
 
-  return dependencies;
+  return { dependencies, importDeclarations, exportDeclarations };
 }
 
 function extractDependencyFromRequire(node) {

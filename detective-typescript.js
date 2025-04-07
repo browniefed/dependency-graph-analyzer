@@ -28,7 +28,8 @@ function detectiveTypeScript(src, options = {}) {
 
   const walker = new Walker(walkerOptions);
   const dependencies = [];
-
+  const importDeclarations = [];
+  const exportDeclarations = [];
   // Pre-parse the source to get the AST to pass to `onFile`,
   // then reuse that AST below in our walker walk.
   const ast = typeof src === "string" ? walker.parse(src) : src;
@@ -58,6 +59,15 @@ function detectiveTypeScript(src, options = {}) {
         }
 
         if (node.source?.value) {
+          importDeclarations.push({
+            source: node.source.value,
+            type: node.importKind,
+            imports: node.specifiers.map((specifier) => {
+              return {
+                name: specifier.local.name,
+              };
+            }),
+          });
           dependencies.push(node.source.value);
         }
 
@@ -71,6 +81,16 @@ function detectiveTypeScript(src, options = {}) {
         }
 
         if (node.source?.value) {
+          // exportDeclarations.push({
+          //   source: node.source.value,
+          //   type: node.exportKind,
+          //   exports: node.specifiers.map((specifier) => {
+          //     return {
+          //       name: specifier.local.name,
+          //     };
+          //   }),
+          // });
+
           dependencies.push(node.source.value);
         }
 
@@ -130,7 +150,7 @@ function detectiveTypeScript(src, options = {}) {
     });
   }
 
-  return dependencies;
+  return { dependencies, importDeclarations, exportDeclarations };
 }
 
 export const tsx = (src, options = {}) => {

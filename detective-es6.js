@@ -15,6 +15,8 @@ export default function (src, options = {}) {
 
   const walker = new Walker();
   const dependencies = [];
+  const importDeclarations = [];
+  const exportDeclarations = [];
 
   walker.walk(src, (node) => {
     switch (node.type) {
@@ -56,5 +58,5 @@ export default function (src, options = {}) {
     }
   });
 
-  return dependencies;
+  return { dependencies, importDeclarations, exportDeclarations };
 }

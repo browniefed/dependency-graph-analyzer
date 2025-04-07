@@ -59,7 +59,8 @@ function precinct(content, options = {}) {
   let dependencies = [];
 
   if (detective) {
-    dependencies = detective(ast, options[type]);
+    const intermediary = detective(ast, options[type]);
+    dependencies = intermediary.dependencies;
   } else {
     debug("no detective found for: %s", type);
   }

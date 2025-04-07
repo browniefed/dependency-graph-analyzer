@@ -94,6 +94,7 @@ export const _getDependencies = function (config = {}) {
     debug(error.stack);
     return [];
   }
+  console.log(dependencies);
 
   const resolvedDependencies = [];
 
